@@ -89,11 +89,6 @@ float3 getNormal2(float _x, float _y, float3 UV)
 	offsetx = _x - gridSize * gridx;
 	offsety = _y - gridSize * gridy;
 	
-	//float3 p1 = float3(_x - (gridSize * UV.x),                    _y - (gridSize * UV.y),                                myTexture[uint2(gridx,gridy)].r);
-	//float3 p2 = float3((_x + gridSize) - (gridSize * UV.x),       _y - (gridSize * UV.y),                                myTexture[uint2(gridx+1,gridy)].r);
-	//float3 p3 = float3((_x + gridSize) - (gridSize * UV.x),       (_y + gridSize) - (gridSize * UV.y),                    myTexture[uint2(gridx+1,gridy+1)].r);
-	//float3 p4 = float3(_x - (gridSize * UV.x),                    (_y + gridSize) - (gridSize * UV.y),                    myTexture[uint2(gridx,gridy+1)].r);
-	
 	float3 normie = float3(0.0,0.0,1.0);
 	
 	if((int)UV.x == 0 && (int)UV.y == 0 && (int)UV.z == 0)
@@ -108,6 +103,12 @@ float3 getNormal2(float _x, float _y, float3 UV)
 		
 		
 		normie = float3(U.z * V.y - U.y * V.z,        U.y * V.x - U.x * V.y,          U.x * V.z - U.z * V.x);
+		
+		//The surface normal of the current triangle
+		//float3 surfaceNorm1 = float3(U.z * V.y - U.y * V.z,        U.y * V.x - U.x * V.y,          U.x * V.z - U.z * V.x);
+		
+		
+		
 	}
 	
 	if((int)UV.x == 1 && (int)UV.y == 0 && (int)UV.z == 0)
@@ -181,30 +182,6 @@ float3 getNormal2(float _x, float _y, float3 UV)
 		normie = -float3(U.z * V.y - U.y * V.z,        U.y * V.x - U.x * V.y,          U.x * V.z - U.z * V.x);
 	}
 	
-	
-	//if(UV.x == 2)
-	//{
-		//float3 U = p1 - p3;
-		//float3 V = p1 - p4;
-		//normie = float3(U.z * V.y - U.y * V.z,        U.y * V.x - U.x * V.y,          U.x * V.z - U.z * V.x);
-	//}
-	/*
-	if(UV.x == 3 && UV.y == 3)
-	{
-		float3 U = p1 - p3;
-		float3 V = p1 - p4;
-		normie = float3(U.z * V.y - U.y * V.z,        U.y * V.x - U.x * V.y,          U.x * V.z - U.z * V.x);
-	}
-	
-	if(UV.x == 2 && UV.y == 3)
-	{
-		float3 U = p1 - p3;
-		float3 V = p1 - p4;
-		normie = float3(U.z * V.y - U.y * V.z,        U.y * V.x - U.x * V.y,          U.x * V.z - U.z * V.x);
-	}
-	*/
-	
-	//normie = float3(0.0,0.0,0.0);
 	return normalize(normie);
 }
 
@@ -218,80 +195,12 @@ VertexShaderOutput main(VertexShaderInput input)
 	//float3 world_space_norm = normalize(mul((float3x3)gm_Matrices[MATRIX_WORLD],input.normals));
 	
 	float3 newNorm = float3(0,0,1);
-	/*
-	if((int)input.uv.x == 0 && (int)input.uv.y == 0)
-	{
-		//Calculate face normals
-		float h1 = myTexture[uint2(input.huv.x,input.huv.y)].r;
-		float h2 = myTexture[uint2(input.huv.x+1,input.huv.y)].r;
-		float h3 = myTexture[uint2(input.huv.x,input.huv.y+1)].r;
 	
-		float3 p1 = float3(pos.x,pos.y,h1);
-		float3 p2 = float3(pos.x+1,pos.y,h2);
-		float3 p3 = float3(pos.x,pos.y+1,h3);
-	
-		float3 U = p2 - p1;
-		float3 V = p3 - p1;
-	
-		newNorm = cross(U,V);
-	}
-	
-	if((int)input.uv.x == 1 && (int)input.uv.y == 1)
-	{
-		//Calculate face normals
-		float h1 = myTexture[uint2(input.huv.x,input.huv.y)].r;
-		float h2 = myTexture[uint2(input.huv.x,input.huv.y-1)].r;
-		float h3 = myTexture[uint2(input.huv.x-1,input.huv.y)].r;
-	
-		float3 p1 = float3(pos.x,pos.y,h1);
-		float3 p2 = float3(pos.x,pos.y-1,h2);
-		float3 p3 = float3(pos.x-1,pos.y,h3);
-	
-		float3 U = p2 - p1;
-		float3 V = p3 - p1;
-	
-		newNorm = cross(U,V);
-	}
-	
-	if((int)input.uv.x == 1 && (int)input.uv.y == 0)
-	{
-		//Calculate face normals
-		float h1 = myTexture[uint2(input.huv.x,input.huv.y)].r;
-		float h2 = myTexture[uint2(input.huv.x,input.huv.y+1)].r;
-		float h3 = myTexture[uint2(input.huv.x-1,input.huv.y)].r;
-	
-		float3 p1 = float3(pos.x,pos.y,h1);
-		float3 p2 = float3(pos.x,pos.y+1,h2);
-		float3 p3 = float3(pos.x-1,pos.y,h3);
-	
-		float3 U = p2 - p1;
-		float3 V = p3 - p1;
-	
-		newNorm = cross(U,V);
-	}
-	
-	if((int)input.uv.x == 0 && (int)input.uv.y == 1)
-	{
-		//Calculate face normals
-		float h1 = myTexture[uint2(input.huv.x,input.huv.y)].r;
-		float h2 = myTexture[uint2(input.huv.x+1,input.huv.y)].r;
-		float h3 = myTexture[uint2(input.huv.x,input.huv.y-1)].r;
-	
-		float3 p1 = float3(pos.x,pos.y,h1);
-		float3 p2 = float3(pos.x+1,pos.y,h2);
-		float3 p3 = float3(pos.x,pos.y-1,h3);
-	
-		float3 U = p2 - p1;
-		float3 V = p3 - p1;
-	
-		newNorm = cross(U,V);
-	}
-	*/
 	float gridSize = 64.0;
 	//Normal Calculations
 	//Calculate face normals
 	
-	newNorm = getNormal2(pos.x,pos.y, input.tuv);
+	newNorm = normalize(mul((float3x3)gm_Matrices[MATRIX_WORLD],getNormal2(pos.x,pos.y, input.tuv)));
 	
     // Transform the vertex position into projected space.
     pos = mul(gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION], pos);

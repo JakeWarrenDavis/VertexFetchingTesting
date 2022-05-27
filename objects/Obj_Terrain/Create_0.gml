@@ -80,3 +80,4 @@ lightDir[1] = light_matrix[1];
 lightDir[2] = light_matrix[2];
 normalize(lightDir);
 u_lightForward = shader_get_uniform(Shader_Terrain, "u_lightForward");
+u_cameraPosition = shader_get_uniform(Shader_Terrain, "u_cameraPosition");
