@@ -21,14 +21,14 @@ float4 main(PixelShaderInput input) : SV_TARGET
     float4 combinedColour = vertColour * texelColour;
 	
 	float4 lightColour = float4(1.0,1.0,1.0,1.0);
-	float4 ambient = lightColour * 0.2;
+	float4 ambient = lightColour * 0.3;
 	ambient.a = 1.0;
 	
 	//float3 lightDir = float3(1,1,-1);
 	float3 lightPos = float3(1000.0,2000.0,300.0);
 	float3 lightDir =  normalize(lightPos-input.pos.xyz);
 	
-	lightDir = normalize(float3(1.0,0.0,0.0));
+	lightDir = normalize(float3(1.0,1.0,1.0));
 	
 	float diff = max(-dot(input.normals,lightDir),0.0);
 	float4 diffuse = diff * lightColour;
