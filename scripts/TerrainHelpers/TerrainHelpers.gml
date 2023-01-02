@@ -19,18 +19,23 @@ function getHeight(_x, _y)
 	var z2 = shader_get_texture_pixel(Obj_Terrain.heightmap, gridx + 1, gridy, 0);
 	var z3 = shader_get_texture_pixel(Obj_Terrain.heightmap, gridx + 1, gridy + 1, 0);
 	var z4 = shader_get_texture_pixel(Obj_Terrain.heightmap, gridx, gridy + 1, 0);
-	
+
 	var zz;
 	if(offsetx > offsety)
 	{
-		//zz = z1 - offsety * (z2-z1) / gridSize - offsetx * (z4 - z1) / gridSize;
+		zz = z1 - offsetx * (z1-z2) / gridSize - offsety * (z2 - z3) / gridSize;
 		//zz = z4 + (lerp(z3,z2,offsety) / gridSize) - (lerp(z3, z4, offsetx)/gridSize);
-		zz = z1 + (lerp(z1,z2,offsetx) / gridSize) - (lerp(z3, z2, offsety)/gridSize);
+		
+		
+		//zz = z1 + (lerp(z1,z2,offsetx) / gridSize)// - (lerp(z3, z2, offsety)/gridSize);
+		//zz = 0;
 	}
 	else
 	{
 		//zz = z1 - offsetx * (z1-z2) / gridSize - offsety * (z1 - z4) / gridSize;
-		zz = z1 + (lerp(z4,z3,offsetx) / gridSize) - (lerp(z4, z1, offsety)/gridSize);
+		//zz = z1 + (lerp(z4,z3,offsetx) / gridSize)// - (lerp(z4, z1, offsety)/gridSize);
+		//zz = 0;
+		zz = z1 - offsetx * (z4-z3) / gridSize - offsety * (z1 - z4) / gridSize;
 	}
 	return zz;
 }

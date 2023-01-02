@@ -18,7 +18,7 @@ vertex_position_3d(buffer, 0,0,0);
 vertex_color(buffer, c_red, 1);
 vertex_position_3d(buffer, width,0,0);
 vertex_color(buffer, c_green, 1);
-vertex_position_3d(buffer, width,height,10);
+vertex_position_3d(buffer, width,height,0);
 vertex_color(buffer, c_blue, 1);
 
 p1[0] = 0;
